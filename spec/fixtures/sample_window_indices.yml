@@ -1,0 +1,11 @@
+# ~/.tmuxinator/sample_window_indices.yml
+
+name: sample
+windows:
+  - first:
+  - third:
+      index: 3
+  - second:
+  - fourth:
+  - seventh:
+      index: 7
