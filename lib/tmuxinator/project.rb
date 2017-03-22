@@ -113,10 +113,20 @@ module Tmuxinator
     end
 
     def windows
-      windows_yml = yaml["tabs"] || yaml["windows"]
+      windows_yml = (yaml["tabs"] || yaml["windows"] || {})
+      index = 0
+      fetch_index = ->(yml) { yml.values.first["index"] if yml.values.first.is_a?(Hash) }
+      custom_indices = windows_yml.map(&fetch_index).compact.map {|i| i - base_index}
 
-      @windows ||= (windows_yml || {}).map.with_index do |window_yml, index|
-        Tmuxinator::Window.new(window_yml, index, self)
+      @windows ||= windows_yml.map do |window_yml|
+        if (custom_index = fetch_index.call(window_yml))
+          window_index = custom_index - base_index
+        else
+          index += 1 while custom_indices.include?(index)
+          window_index = index
+          index += 1
+        end
+        Tmuxinator::Window.new(window_yml, window_index, self)
       end
     end
 

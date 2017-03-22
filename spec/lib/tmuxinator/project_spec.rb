@@ -14,6 +14,9 @@ describe Tmuxinator::Project do
   let(:project_with_literals_as_window_name) do
     FactoryBot.build(:project_with_literals_as_window_name)
   end
+  let(:project_with_window_indices) do
+    FactoryGirl.build(:project_with_window_indices)
+  end
   let(:project_with_deprecations) do
     FactoryBot.build(:project_with_deprecations)
   end
@@ -112,6 +115,14 @@ describe Tmuxinator::Project do
     context "with deprecations" do
       it "still gets the list of windows" do
         expect(project_with_deprecations.windows).to_not be_empty
+      end
+    end
+
+    context "with window indices" do
+      it "assigns the correct indeces to windows" do
+        allow(project).to receive_messages(base_index: 1)
+        indices = project_with_window_indices.windows.map(&:index)
+        expect(indices).to eq([0, 2, 1, 3, 6])
       end
     end
   end

@@ -58,6 +58,14 @@ FactoryBot.define do
     initialize_with { Tmuxinator::Project.new(file) }
   end
 
+  factory :project_with_window_indices, class: Tmuxinator::Project do
+    transient do
+      file { yaml_load("spec/fixtures/sample_window_indices.yml") }
+    end
+
+    initialize_with { Tmuxinator::Project.new(file) }
+  end
+
   factory :project_with_deprecations, class: Tmuxinator::Project do
     transient do
       file { yaml_load("spec/fixtures/sample.deprecations.yml") }
