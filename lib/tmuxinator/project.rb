@@ -103,9 +103,12 @@ module Tmuxinator
       root.blank? ? nil : File.expand_path(root).shellescape
     end
 
+    def name_plain
+      custom_name || yaml["project_name"] || yaml["name"]
+    end
+
     def name
-      name = custom_name || yaml["project_name"] || yaml["name"]
-      name.blank? ? nil : name.to_s.shellescape
+      name_plain.blank? ? nil : name_plain.to_s.shellescape
     end
 
     def pre
